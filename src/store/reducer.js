@@ -1,9 +1,41 @@
 const initialState = {
 	loading: false,
-	launches: [{"flight_number":1,"mission_name":"FalconSat","launch_date_local":"2006-03-25T10:30:00+12:00","rocket":{"rocket_name":"Falcon 1"}},{"flight_number":2,"mission_name":"DemoSat","launch_date_local":"2007-03-21T13:10:00+12:00","rocket":{"rocket_name":"Falcon 1"}},{"flight_number":3,"mission_name":"Trailblazer","launch_date_local":"2008-08-02T15:34:00+12:00","rocket":{"rocket_name":"Falcon 1"}},{"flight_number":4,"mission_name":"RatSat","launch_date_local":"2008-09-28T11:15:00+12:00","rocket":{"rocket_name":"Falcon 1"}},{"flight_number":5,"mission_name":"RazakSat","launch_date_local":"2009-07-13T15:35:00+12:00","rocket":{"rocket_name":"Falcon 1"}}]
+	pageNumber: 1,
+	numberOfPages: 0,
+	filterByYear: null,
+	sortBy: 'asc', //or 'desc
+	totalResults: 0,
+	resultsPerPage: 20,
+	launches: [],
 }
 
 const reducer = (state = initialState, action) => {
+	switch( action.type ){
+		case 'UPDATE_DATA':
+		return {
+			...state,
+			launches: action.payload,
+			totalResults: action.total,
+			numberOfPages:  action.numberOfPages
+		}
+		case 'CHANGE_PAGE_NUMBER':
+		return {
+			...state,
+			pageNumber: action.pageNumber,
+		}
+		case 'CHANGE_SORT':
+		return {
+			...state,
+			sortBy: action.sort,
+		}
+		case 'CHANGE_FILTER':
+		return {
+			...state,
+			filterByYear: action.year,
+		}
+		default:
+	}
+
 	return state;
 };
 

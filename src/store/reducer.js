@@ -2,8 +2,8 @@ const initialState = {
 	loading: false,
 	pageNumber: 1,
 	numberOfPages: 0,
-	filterByYear: null,
-	sortBy: 'asc', //or 'desc
+	filterByYear: '',
+	sortBy: 'asc', //or 'asc
 	totalResults: 0,
 	resultsPerPage: 20,
 	launches: [],
@@ -35,7 +35,6 @@ const reducer = (state = initialState, action) => {
 		}
 		default:
 	}
-
 	return state;
 };
 

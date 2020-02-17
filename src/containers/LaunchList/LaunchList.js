@@ -8,55 +8,69 @@ import Filters from "../../components/Filters/Filters";
 
 import './_launchList.scss';
 
-const api = 'https://api.spacexdata.com/v3/launches?filter=flight_id,flight_number,mission_name,launch_date_local,rocket/rocket_name&limit=10&order=desc&launch_year=';
-
-//normal first page url
-//https://api.spacexdata.com/v3/launches?filter=flight_id,flight_number,mission_name,launch_date_local,rocket/rocket_name&limit=10
-
-//sort by asc
-//https://api.spacexdata.com/v3/launches?filter=flight_id,flight_number,mission_name,launch_date_local,rocket/rocket_name&limit=10&sort=desc
+const apiBase = 'https://api.spacexdata.com/v3/launches?filter=flight_id,flight_number,mission_name,launch_date_local,rocket/rocket_name';
 
 export class LaunchList extends React.Component {
 	componentDidMount() {
-		axios.get(api)
-			.then(response => {
-				this.upDateDataHandler(response.data, response.headers['spacex-api-count'], this.props.resultsPerPage );
-			});
+		this.loadData();
+	}
 
+	componentDidUpdate(prevProps){
+		console.log('update');
+		// this check makes sure we only update when our filter props change
+		if(this.props.filterByYear !== prevProps.filterByYear ||
+		this.props.sortBy !== prevProps.sortBy ||
+		this.props.pageNumber !== prevProps.pageNumber ){
+				this.loadData();
+				console.log(this.props.sortBy);
+		}
 	}
 
 	upDateDataHandler = (data, total, resultsPerPage) => {
 		this.props.onDataUpdate(data, total, resultsPerPage);
 	}
 
-	filterHandler =(value, event) => {
-		console.log(value, event);
+	filterHandler =(event) => {
+		this.props.onFilterChange(event.target.value);
 	}
 
-	sortHandler =(value, event) => {
-		console.log(value, event);
+	sortHandler =(value) => {;
+		this.props.onSortChange(value);
 	}
 
-	paginationHandler =(value, event) => {
-		console.log(value, event);
+	paginationHandler =(value) => {
+		this.props.onPaginationChange(value);
+	}
+
+	createUrl = () => {
+		const offset = (this.props.pageNumber - 1) * this.props.resultsPerPage;
+		return `${apiBase}&limit=${this.props.resultsPerPage}&order=${this.props.sortBy}&offset=${offset}&launch_year=${this.props.filterByYear}`;
+	}
+
+	loadData = () => {
+			const urlFilter = this.createUrl();
+			axios.get(urlFilter)
+			.then(response => {
+				this.upDateDataHandler(response.data, response.headers['spacex-api-count'], this.props.resultsPerPage );
+		});
 	}
 
 	render() {
 	return (
 		<div>
-			<Filters filterHandler = { this.filterHandler } sortHandler = {this.sortHandler} />
-	  <ul>
-		{this.props.launches.map((launch) =>
-			<li key={launch.flight_number}><LaunchDetail launch= {launch}/></li>
-		)}
-	  </ul>
-	  	<Pagination
-			pageNumber= {this.props.pageNumber}
-			numberOfPages = { this.props.numberOfPages }
-			totalResults = { this.props.totalResults}
-			paginationHandler ={ this.paginationHandler }
-		/>
-	  </div>
+			<Filters sortBy= { this.props.sortBy }filterHandler = { this.filterHandler } sortHandler = {this.sortHandler} />
+			<ul>
+				{this.props.launches.map((launch) =>
+					<li key={launch.flight_number}><LaunchDetail launch= {launch}/></li>
+				)}
+			</ul>
+			<Pagination
+				pageNumber= {this.props.pageNumber}
+				numberOfPages = { this.props.numberOfPages }
+				totalResults = { this.props.totalResults}
+				paginationHandler ={ this.paginationHandler }
+			/>
+		</div>
 	);
   }
 };
@@ -67,7 +81,9 @@ const mapStateToProps = state => {
 		pageNumber:state.pageNumber,
 		totalResults:state.totalResults,
 		resultsPerPage:state.resultsPerPage,
-		numberOfPages: state.numberOfPages
+		numberOfPages: state.numberOfPages,
+		filterByYear: state.filterByYear,
+		sortBy: state.sortBy
 	};
 };
 
@@ -76,6 +92,15 @@ const mapDispatchToProps = dispatch => {
 		onDataUpdate: (data, total, resultsPerPage) => {
 			const numberOfPages = Math.ceil(total/resultsPerPage);
 			dispatch({type: 'UPDATE_DATA', payload:data, total: total, numberOfPages: numberOfPages})
+		},
+		onFilterChange: (data) => {
+			dispatch({type: 'CHANGE_FILTER', year:data })
+		},
+		onSortChange: (data) => {
+			dispatch({type: 'CHANGE_SORT', sort:data })
+		},
+		onPaginationChange: (data) => {
+			dispatch({type: 'CHANGE_PAGE_NUMBER', pageNumber:data })
 		}
 	};
 };

@@ -7,16 +7,23 @@
 	margin: 0 auto;
 	padding: 0 30px;
 
+
 	&_imageContainer {
-		width: 45%;
-		padding: 30px 50px 0 0;
-	}
+		display:none;
+		@media (min-width: $breakpoint-md) {
+			display:block;
+			width: 45%;
+			padding: 30px 50px 0 0;
+	}	}
 
 	&_image {
 		width: 100%;
 	}
 
 	&_listContainer {
-		width: 55%;
+		width: 100%;
+			@media (min-width: $breakpoint-md) {
+			 width: 55%;
+		}
 	}
 }

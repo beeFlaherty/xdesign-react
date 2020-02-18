@@ -1,0 +1,13 @@
+.filters {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+
+	&_button {
+		margin-bottom: 13px;
+
+		&:not(:last-child){
+			margin-right: 10px;
+		}
+	}
+}

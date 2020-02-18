@@ -1,0 +1,14 @@
+.pagination {
+	padding: 10px;
+
+	&_navigation {
+		text-align: center;
+	}
+
+	&_navigationItem {
+		display: inline-block;
+		&:not(:last-child){
+			margin-right: 5px;
+		}
+	}
+}

@@ -1,6 +1,23 @@
 .header {
 	padding: 30px 40px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	width: 100%;
+	max-width: 1450px;
+	margin: 0 auto;
+
 	&_logo {
 		height: 30px;
+	}
+
+	&_title {
+		font-family: $font-family;
+		font-size: 25px;
+		display:inline-block;
+		padding-top: 10px;
+		margin-left: -30px;
+		color: $font-color;
+		text-transform: uppercase;
 	}
 }

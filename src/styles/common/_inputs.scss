@@ -1,0 +1,16 @@
+.buttonSelect {
+	display: inline-block;
+	text-decoration: none;
+	border: 0;
+	background:  $primary-blue;
+	color: $white;
+	font-family: $font-family;
+	font-size: 1.6rem;
+	line-height: 1.6rem;
+	font-weight: 700;
+	padding: 9px 38px 9px 14px;
+
+	appearance: none;
+	background: $primary-blue url('/assets/icon/select@2x.png') 90% / 15% no-repeat;
+	background-size: 14px 10px;
+}

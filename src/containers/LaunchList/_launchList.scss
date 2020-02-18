@@ -1,4 +1,22 @@
+
 .launchList {
-	width: 80%;
+	color: $font-color;
+	display: flex;
+	width: 100%;
+	max-width: 1450px;
 	margin: 0 auto;
+	padding: 0 30px;
+
+	&_imageContainer {
+		width: 45%;
+		padding: 30px 50px 0 0;
+	}
+
+	&_image {
+		width: 100%;
+	}
+
+	&_listContainer {
+		width: 55%;
+	}
 }

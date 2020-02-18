@@ -1,3 +1,13 @@
 @import 'styles/vendor/reset';
+@import 'styles/common/base';
 @import 'styles/common/colors';
 @import 'styles/common/fonts';
+
+@import 'styles/common/buttons';
+@import 'styles/common/inputs';
+
+@import 'components/Header/header';
+@import 'containers/launchList/launchList';
+@import 'components/Filters/filters';
+@import 'components/launchDetail/launchDetail';
+@import 'components/Pagination/pagination';

@@ -8,7 +8,7 @@ const Pagination = (props) => {
 	}
 
 	return  <div className="pagination">
-				<nav role="pagination" aria-label="Pagination Navigation">
+				<nav role="navigation" aria-label="Pagination Navigation">
 					<ul className="pagination_navigation">
 						{ pages }
 					</ul>

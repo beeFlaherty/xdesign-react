@@ -53,7 +53,7 @@ export class LaunchList extends React.Component {
 
 	render() {
 	return (
-		<div className={"launchList " + (this.props.loading ? 'loading' : 'loaded')}>
+		<div className={"launchList " + (this.props.loading ? 'loading' : 'loaded')} aria-live="polite">
 			<div className="launchList_imageContainer">
 				<img className="launchList_image" src="assets/img/launch-home.png" alt="Launch Image"/>
 			</div>

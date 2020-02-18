@@ -30,7 +30,8 @@ const Filters = (props) => {
 	}
 
 	return  <div className="filters">
-				<select className="filters_button buttonSelect" onChange= {props.filterHandler.bind(this)}>
+				<label for="filterbyyear" className="sr-only">Filter By Year</label>
+				<select id="filterbyyear" className="filters_button buttonSelect" onChange= {props.filterHandler.bind(this)}>
 					<option value= "">Filter By Year</option>
 					<option value= "">All</option>
 

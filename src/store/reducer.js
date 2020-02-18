@@ -33,6 +33,11 @@ const reducer = (state = initialState, action) => {
 			...state,
 			filterByYear: action.year,
 		}
+		case 'TOGGLE_LOADING':
+		return {
+			...state,
+			loading: !state.loading,
+		}
 		default:
 	}
 	return state;

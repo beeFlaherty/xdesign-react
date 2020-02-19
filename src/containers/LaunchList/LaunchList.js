@@ -57,7 +57,7 @@ export class LaunchList extends React.Component {
 	return (
 		<div className={"launchList " + (this.props.loading ? 'loading' : 'loaded')} aria-live="polite">
 			<div className="launchList_imageContainer">
-				<img className="launchList_image" src="assets/img/launch-home.png" alt="Launch"/>
+				<img className="launchList_image" src="assets/img/launch-home.png" srcset="assets/img/launch-home@2x.png 2x" alt="Launch" />
 			</div>
 			<div className="launchList_listContainer">
 				<Filters sortBy= { this.props.sortBy }filterHandler = { this.filterHandler } sortHandler = {this.sortHandler} />

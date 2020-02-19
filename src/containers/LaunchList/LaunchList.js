@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from "react-redux";
 import axios from 'axios';
 
-import LaunchDetail from "../../components/LaunchDetail/LaunchDetail";
+import {LaunchDetail} from "../../components/LaunchDetail/LaunchDetail";
 import Pagination from "../../components/Pagination/Pagination";
 import Filters from "../../components/Filters/Filters";
 

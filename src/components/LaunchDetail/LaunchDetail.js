@@ -34,11 +34,10 @@ const LaunchDetail = (props) => {
 				<span className="launchDetail_number">{props.launch.flight_number}</span>
 				<span className="launchDetail_name">{props.launch.mission_name} </span>
 				<span className="launchDetail_detailWrap">
-
 					<span className="launchDetail_date">{getFormattedDate(props.launch.launch_date_utc)} </span>
 					<span className="launchDetail_rocket">{props.launch.rocket.rocket_name}</span>
 				</span>
 			</p>
 }
 
-export default LaunchDetail;
+export  { LaunchDetail, getFormattedDate}

@@ -7,6 +7,7 @@ const initialState = {
 	totalResults: 0,
 	resultsPerPage: 20,
 	launches: [],
+	message: ""
 }
 
 const reducer = (state = initialState, action) => {
@@ -16,7 +17,8 @@ const reducer = (state = initialState, action) => {
 			...state,
 			launches: action.payload,
 			totalResults: action.total,
-			numberOfPages:  action.numberOfPages
+			numberOfPages:  action.numberOfPages,
+			message: action.message
 		}
 		case 'CHANGE_PAGE_NUMBER':
 		return {

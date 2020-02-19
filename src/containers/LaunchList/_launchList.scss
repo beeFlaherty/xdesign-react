@@ -26,4 +26,11 @@
 			 width: 55%;
 		}
 	}
+
+	&_error {
+		text-align: center;
+		font-family: $font-family;
+		font-size: 1.6rem;
+		margin-top: 40px;
+	}
 }

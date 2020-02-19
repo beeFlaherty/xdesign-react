@@ -6,7 +6,7 @@ import {LaunchDetail} from "../../components/LaunchDetail/LaunchDetail";
 import Pagination from "../../components/Pagination/Pagination";
 import Filters from "../../components/Filters/Filters";
 
-const apiBase = 'https://api.spacexdata.com/v3/launches?filter=flight_id,flight_number,mission_name,launch_date_local,launch_date_utc,rocket/rocket_name';
+const apiBase = 'https://api.spacexdata.com/v3/launches?filter=flight_id,mission_name,flight_number,launch_date_utc,rocket/rocket_name';
 
 export class LaunchList extends React.Component {
 	componentDidMount() {
@@ -17,13 +17,14 @@ export class LaunchList extends React.Component {
 		// this check makes sure we only update when our filter props change
 		if(this.props.filterByYear !== prevProps.filterByYear ||
 		this.props.sortBy !== prevProps.sortBy ||
-		this.props.pageNumber !== prevProps.pageNumber ){
+		this.props.pageNumber !== prevProps.pageNumber ||
+		this.props.message !== prevProps.message ) {
 				this.loadData();
 		}
 	}
 
-	upDateDataHandler = (data, total, resultsPerPage) => {
-		this.props.onDataUpdate(data, total, resultsPerPage);
+	upDateDataHandler = (data, total, resultsPerPage, message) => {
+		this.props.onDataUpdate(data, total, resultsPerPage, message);
 	}
 
 	filterHandler =(event) => {
@@ -48,34 +49,56 @@ export class LaunchList extends React.Component {
 			this.props.toggleLoadingState();
 			axios.get(urlFilter)
 			.then(response => {
-				this.upDateDataHandler(response.data, response.headers['spacex-api-count'], this.props.resultsPerPage );
+				let message = "";
+				if (response.data.length === 0) {
+					message = "No results Found"
+				}
+				this.upDateDataHandler(response.data, response.headers['spacex-api-count'], this.props.resultsPerPage, message );
 				this.props.toggleLoadingState();
-		});
+			}).catch(error => {
+					let message = "There has been an error.";
+					this.upDateDataHandler([], 0, this.props.resultsPerPage, message );
+					this.props.toggleLoadingState();
+			});
 	}
 
 	render() {
-	return (
-		<div className={"launchList " + (this.props.loading ? 'loading' : 'loaded')} aria-live="polite">
-			<div className="launchList_imageContainer">
-				<img className="launchList_image" src="assets/img/launch-home.png" srcset="assets/img/launch-home@2x.png 2x" alt="Launch" />
-			</div>
-			<div className="launchList_listContainer">
-				<Filters sortBy= { this.props.sortBy }filterHandler = { this.filterHandler } sortHandler = {this.sortHandler} />
-				<ul>
-					{this.props.launches.map((launch) =>
-						<li key={launch.flight_number}><LaunchDetail launch= {launch}/></li>
-					)}
-				</ul>
-				<Pagination
-					pageNumber= {this.props.pageNumber}
-					numberOfPages = { this.props.numberOfPages }
-					totalResults = { this.props.totalResults}
-					paginationHandler ={ this.paginationHandler }
-				/>
-			</div>
-		</div>
-	);
-  }
+		if (this.props.launches.length > 0) {
+			return (
+
+				<div className={"launchList " + (this.props.loading ? 'loading' : 'loaded')} aria-live="polite">
+					<div className="launchList_imageContainer">
+						<img className="launchList_image" src="assets/img/launch-home.png" srcSet="assets/img/launch-home@2x.png 2x" alt="Launch" />
+					</div>
+					<div className="launchList_listContainer">
+						<Filters sortBy= { this.props.sortBy }filterHandler = { this.filterHandler } sortHandler = {this.sortHandler} />
+						<ul>
+							{this.props.launches.map((launch) =>
+								<li key={launch.flight_number}><LaunchDetail launch= {launch}/></li>
+							)}
+						</ul>
+						<Pagination
+							pageNumber= {this.props.pageNumber}
+							numberOfPages = { this.props.numberOfPages }
+							totalResults = { this.props.totalResults}
+							paginationHandler ={ this.paginationHandler }
+						/>
+					</div>
+				</div>
+			)
+		}
+		else {
+			return (<div className={"launchList " + (this.props.loading ? 'loading' : 'loaded')} aria-live="polite">
+						<div className="launchList_imageContainer">
+							<img className="launchList_image" src="assets/img/launch-home.png" srcSet="assets/img/launch-home@2x.png 2x" alt="Launch" />
+						</div>
+						<div className="launchList_listContainer">
+							<p className="launchList_error" >{this.props.message}</p>
+						</div>
+					</div>
+					)
+		}
+	}
 };
 
 const mapStateToProps = state => {
@@ -87,15 +110,16 @@ const mapStateToProps = state => {
 		numberOfPages: state.numberOfPages,
 		filterByYear: state.filterByYear,
 		sortBy: state.sortBy,
-		loading: state.loading
+		loading: state.loading,
+		message: state.message
 	};
 };
 
 const mapDispatchToProps = dispatch => {
 	return {
-		onDataUpdate: (data, total, resultsPerPage) => {
+		onDataUpdate: (data, total, resultsPerPage, message) => {
 			const numberOfPages = Math.ceil(total/resultsPerPage);
-			dispatch({type: 'UPDATE_DATA', payload:data, total: total, numberOfPages: numberOfPages})
+			dispatch({type: 'UPDATE_DATA', payload:data, total: total, numberOfPages: numberOfPages, message: message})
 		},
 		onFilterChange: (data) => {
 			dispatch({type: 'CHANGE_FILTER', year:data })

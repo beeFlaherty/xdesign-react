@@ -9,9 +9,6 @@ function App(props) {
 	<div className={"app " + (props.loading ? 'loading' : 'loaded')}>
 		<Header />
 		<LaunchList />
-		<div className={"app_indicator" + (props.loading ? 'loading' : 'loaded')}>
-			<p>Loading</p>
-		</div>
 	</div>
 	);
 }

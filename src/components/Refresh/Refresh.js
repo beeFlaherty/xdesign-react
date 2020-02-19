@@ -2,12 +2,12 @@ import React from 'react';
 import { connect } from "react-redux";
 import axios from 'axios';
 
-const apiBase = 'https://api.spacexdata.com/v3/launches?filter=flight_id,flight_number,mission_name,launch_date_local,rocket/rocket_name';
+const apiBase = 'https://api.spacexdata.com/v3/launches?filter=flight_id,flight_number,mission_name,launch_date_utc,rocket/rocket_name';
 
 export class Refresh extends React.Component {
 
-	upDateDataHandler = (data, total, resultsPerPage) => {
-		this.props.onDataUpdate(data, total, resultsPerPage);
+	upDateDataHandler = (data, total, resultsPerPage, message) => {
+		this.props.onDataUpdate(data, total, resultsPerPage, message);
 	}
 
 	createUrl = () => {
@@ -20,9 +20,17 @@ export class Refresh extends React.Component {
 			this.props.toggleLoadingState();
 			axios.get(urlFilter)
 			.then(response => {
-				this.upDateDataHandler(response.data, response.headers['spacex-api-count'], this.props.resultsPerPage );
+				let message = "";
+				if (response.data.length === 0) {
+					message = "No results Found"
+				}
+				this.upDateDataHandler(response.data, response.headers['spacex-api-count'], this.props.resultsPerPage, message );
 				this.props.toggleLoadingState();
-		});
+			}).catch(error => {
+					let message = "There has been an error.";
+					this.upDateDataHandler([], 0, this.props.resultsPerPage, message );
+					this.props.toggleLoadingState();
+			});
 	}
 
 
@@ -48,9 +56,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		onDataUpdate: (data, total, resultsPerPage) => {
+		onDataUpdate: (data, total, resultsPerPage, message) => {
 			const numberOfPages = Math.ceil(total/resultsPerPage);
-			dispatch({type: 'UPDATE_DATA', payload:data, total: total, numberOfPages: numberOfPages})
+			dispatch({type: 'UPDATE_DATA', payload:data, total: total, numberOfPages: numberOfPages, message: message})
 		},
 		toggleLoadingState: (data) => {
 			dispatch({type: 'TOGGLE_LOADING', pageNumber:data })

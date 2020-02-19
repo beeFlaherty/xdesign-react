@@ -13,4 +13,8 @@
 	appearance: none;
 	background: $primary-blue url('/assets/icon/select@2x.png') 90% / 15% no-repeat;
 	background-size: 14px 10px;
+
+	&:hover, &:focus {
+		background-color: $font-color;
+	}
 }

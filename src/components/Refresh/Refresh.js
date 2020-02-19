@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from "react-redux";
 import axios from 'axios';
 
-const apiBase = 'https://api.spacexdata.com/v3/launches?filter=flight_id,flight_number,mission_name,launch_date_utc,rocket/rocket_name';
+const apiBase = 'https://api.spacexdata.com/v3/launches?filter=flight_id,flight_number,mission_name,launch_date_utc,rocket/rocket_name&sort=launch_date_utc';
 
 export class Refresh extends React.Component {
 

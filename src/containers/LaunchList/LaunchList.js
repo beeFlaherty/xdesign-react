@@ -6,7 +6,7 @@ import {LaunchDetail} from "../../components/LaunchDetail/LaunchDetail";
 import Pagination from "../../components/Pagination/Pagination";
 import Filters from "../../components/Filters/Filters";
 
-const apiBase = 'https://api.spacexdata.com/v3/launches?filter=flight_id,mission_name,flight_number,launch_date_utc,rocket/rocket_name';
+const apiBase = 'https://api.spacexdata.com/v3/launches?filter=flight_id,mission_name,flight_number,launch_date_utc,rocket/rocket_name&sort=launch_date_utc';
 
 export class LaunchList extends React.Component {
 	componentDidMount() {

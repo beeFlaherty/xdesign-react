@@ -10,6 +10,19 @@
 	font-weight: 700;
 	padding: 10px 14px;
 
+	&:hover, &:focus {
+		background: $font-color;
+	}
+
+	&--active {
+		background: $white;
+		color: $font-color;
+
+		&:hover, &:focus {
+			background: $white;
+		}
+	}
+
 	&--sort {
 		position: relative;
 		padding: 10px 34px 10px 14px;

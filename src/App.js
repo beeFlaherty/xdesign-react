@@ -1,15 +1,25 @@
 import React from 'react';
-import './_app.scss';
+import { connect } from "react-redux";
+
 import Header from "./components/Header/Header";
 import LaunchList from "./containers/LaunchList/LaunchList";
 
-function App() {
+function App(props) {
 	return (
-	<div className="App">
+	<div className={"app " + (props.loading ? 'loading' : 'loaded')}>
 		<Header />
 		<LaunchList />
+		<div className={"app_indicator" + (props.loading ? 'loading' : 'loaded')}>
+			<p>Loading</p>
+		</div>
 	</div>
 	);
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+		loading: state.loading
+	};
+};
+
+export default connect(mapStateToProps)(App);

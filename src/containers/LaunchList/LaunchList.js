@@ -6,7 +6,7 @@ import LaunchDetail from "../../components/LaunchDetail/LaunchDetail";
 import Pagination from "../../components/Pagination/Pagination";
 import Filters from "../../components/Filters/Filters";
 
-const apiBase = 'https://api.spacexdata.com/v3/launches?filter=flight_id,flight_number,mission_name,launch_date_local,rocket/rocket_name';
+const apiBase = 'https://api.spacexdata.com/v3/launches?filter=flight_id,flight_number,mission_name,launch_date_local,launch_date_utc,rocket/rocket_name';
 
 export class LaunchList extends React.Component {
 	componentDidMount() {
@@ -45,9 +45,11 @@ export class LaunchList extends React.Component {
 
 	loadData = () => {
 			const urlFilter = this.createUrl();
+			this.props.toggleLoadingState();
 			axios.get(urlFilter)
 			.then(response => {
 				this.upDateDataHandler(response.data, response.headers['spacex-api-count'], this.props.resultsPerPage );
+				this.props.toggleLoadingState();
 		});
 	}
 
@@ -55,7 +57,7 @@ export class LaunchList extends React.Component {
 	return (
 		<div className={"launchList " + (this.props.loading ? 'loading' : 'loaded')} aria-live="polite">
 			<div className="launchList_imageContainer">
-				<img className="launchList_image" src="assets/img/launch-home.png" alt="Launch Image"/>
+				<img className="launchList_image" src="assets/img/launch-home.png" alt="Launch"/>
 			</div>
 			<div className="launchList_listContainer">
 				<Filters sortBy= { this.props.sortBy }filterHandler = { this.filterHandler } sortHandler = {this.sortHandler} />
@@ -104,8 +106,8 @@ const mapDispatchToProps = dispatch => {
 		onPaginationChange: (data) => {
 			dispatch({type: 'CHANGE_PAGE_NUMBER', pageNumber:data })
 		},
-		toggleLoadingState: (data) => {
-			dispatch({type: 'TOGGLE_LOADING', pageNumber:data })
+		toggleLoadingState: () => {
+			dispatch({type: 'TOGGLE_LOADING' })
 		}
 	};
 };
